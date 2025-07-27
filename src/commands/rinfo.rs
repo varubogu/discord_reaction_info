@@ -13,6 +13,7 @@ use crate::utils::{self, create_error_response};
 
 #[derive(CommandModel, CreateCommand)]
 #[command(name = "rinfo", desc = "Get reaction information for a message")]
+#[allow(dead_code)]
 pub struct RinfoCommand {
     /// Message URL or ID
     message: String,
@@ -35,10 +36,11 @@ pub struct RinfoCommand {
 }
 
 impl RinfoCommand {
+    #[allow(dead_code)]
     pub async fn handle(
         self,
         http: Arc<HttpClient>,
-        interaction: &Interaction,
+        _interaction: &Interaction,
         _command_data: &CommandData,
     ) -> Result<InteractionResponse> {
         // Parse the message identifier
@@ -128,8 +130,8 @@ impl RinfoCommand {
 /// * `reaction` - The reaction
 ///
 /// # Returns
-///
 /// * `String` - The emoji name or ID
+#[allow(dead_code)]
 fn get_emoji_name(reaction: &Reaction) -> String {
     match &reaction.emoji {
         emoji => {
@@ -149,11 +151,11 @@ fn get_emoji_name(reaction: &Reaction) -> String {
 /// * `exclude_reaction` - Optional string of reactions to exclude (comma-separated)
 ///
 /// # Returns
-///
 /// * `Vec<Reaction>` - The filtered reactions
+#[allow(dead_code)]
 fn filter_reactions(reactions: Vec<Reaction>, exclude_reaction: Option<&str>) -> Vec<Reaction> {
     if let Some(exclude_str) = exclude_reaction {
-        let excluded: HashSet<String> = exclude_str
+        let _excluded: HashSet<String> = exclude_str
             .split(',')
             .map(|s| s.trim().to_string())
             .collect();
@@ -174,8 +176,8 @@ fn filter_reactions(reactions: Vec<Reaction>, exclude_reaction: Option<&str>) ->
 /// * `user_only` - Whether to only show users, not grouped by reaction
 ///
 /// # Returns
-///
 /// * `String` - The formatted reaction information
+#[allow(dead_code)]
 fn format_reaction_info(
     reaction_users_map: HashMap<String, Vec<String>>,
     user_only: bool,
@@ -224,6 +226,7 @@ fn format_reaction_info(
 }
 
 // Handle context menu command for messages
+#[allow(dead_code)]
 pub async fn handle_context_menu(
     _http: Arc<HttpClient>,
     _interaction: &Interaction,

@@ -3,15 +3,10 @@ use std::{env, error::Error, sync::Arc};
 use twilight_cache_inmemory::{DefaultInMemoryCache, ResourceType};
 use twilight_gateway::{Event, EventTypeFlags, Intents, Shard, ShardId, StreamExt as _};
 use twilight_http::Client as HttpClient;
-use twilight_interactions::command::{CommandInputData, CommandModel};
-use twilight_model::application::interaction::application_command::CommandData;
 use twilight_model::application::interaction::{InteractionData, InteractionType};
-use twilight_model::id::Id;
 
 mod commands;
 mod utils;
-
-use utils::create_error_response;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

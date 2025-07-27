@@ -12,6 +12,7 @@ use twilight_model::id::{marker::{ChannelMarker, MessageMarker}, Id};
 /// # Returns
 ///
 /// * `Result<(Id<ChannelMarker>, Id<MessageMarker>)>` - A tuple of channel_id and message_id
+#[allow(dead_code)]
 pub fn parse_message_identifier(message_identifier: &str) -> Result<(Id<ChannelMarker>, Id<MessageMarker>)> {
     // Check if the message_identifier is a numeric string (message ID)
     if message_identifier.chars().all(|c| c.is_digit(10)) {
@@ -42,6 +43,7 @@ pub fn parse_message_identifier(message_identifier: &str) -> Result<(Id<ChannelM
 /// # Returns
 ///
 /// * `InteractionResponse` - The error response
+#[allow(dead_code)]
 pub fn create_error_response(error_message: &str) -> InteractionResponse {
     InteractionResponse {
         kind: InteractionResponseType::ChannelMessageWithSource,
