@@ -1,11 +1,11 @@
-use std::{env, error::Error, sync::Arc};
 use dotenv::dotenv;
+use std::{env, error::Error, sync::Arc};
 use twilight_cache_inmemory::{DefaultInMemoryCache, ResourceType};
 use twilight_gateway::{Event, EventTypeFlags, Intents, Shard, ShardId, StreamExt as _};
 use twilight_http::Client as HttpClient;
-use twilight_interactions::command::{CommandModel, CommandInputData};
-use twilight_model::application::interaction::{InteractionData, InteractionType};
+use twilight_interactions::command::{CommandInputData, CommandModel};
 use twilight_model::application::interaction::application_command::CommandData;
+use twilight_model::application::interaction::{InteractionData, InteractionType};
 use twilight_model::id::Id;
 
 mod commands;
@@ -30,17 +30,17 @@ async fn main() -> anyhow::Result<()> {
 
     // HTTP is separate from the gateway, so create a new client.
     let http = Arc::new(HttpClient::new(token.clone()));
-    
+
     // Register application commands
     let application_id = http.current_user_application().await?.model().await?.id;
-    
+
     tracing::info!("Registering application commands...");
     let commands = commands::register_commands();
-    
+
     http.interaction(application_id)
         .set_global_commands(&commands)
         .await?;
-    
+
     tracing::info!("Application commands registered successfully!");
 
     // Since we only care about new messages, make the cache only
@@ -72,9 +72,7 @@ async fn handle_event(
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
     match event {
         Event::MessageCreate(msg) if msg.content == "!ping" => {
-            http.create_message(msg.channel_id)
-                .content("Pong!")
-                .await?;
+            http.create_message(msg.channel_id).content("Pong!").await?;
         }
         Event::InteractionCreate(interaction) => {
             if interaction.kind == InteractionType::ApplicationCommand {
@@ -84,7 +82,7 @@ async fn handle_event(
                         "Received command: {}\n\nThis is a placeholder response. The actual implementation would process the command.",
                         command_data.name
                     );
-                    
+
                     let response = twilight_model::http::interaction::InteractionResponse {
                         kind: twilight_model::http::interaction::InteractionResponseType::ChannelMessageWithSource,
                         data: Some(twilight_model::http::interaction::InteractionResponseData {
@@ -100,9 +98,10 @@ async fn handle_event(
                             tts: Some(false),
                         }),
                     };
-                    
+
                     // Send the response
-                    if let Err(e) = http.interaction(interaction.application_id)
+                    if let Err(e) = http
+                        .interaction(interaction.application_id)
                         .create_response(interaction.id, &interaction.token, &response)
                         .await
                     {

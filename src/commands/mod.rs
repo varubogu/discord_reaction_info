@@ -2,7 +2,6 @@ pub mod rinfo;
 
 use twilight_interactions::command::{CommandModel, CreateCommand};
 use twilight_model::application::command::CommandType;
-use twilight_model::http::interaction::{InteractionResponse, InteractionResponseType};
 
 pub fn register_commands() -> Vec<twilight_model::application::command::Command> {
     vec![
